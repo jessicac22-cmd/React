@@ -1,0 +1,53 @@
+
+import { Button, Modal } from 'react-bootstrap';
+import './Dialog.css'
+
+ type DialogProps= {
+  title?: string;
+  mostrar: boolean;
+  mensagem?: string;
+  textoConfirmar:string;
+  textoCancelar: string;
+  aofechar:() => void;
+  aoConfirmar:() => void;
+ }
+
+
+function Dialog({
+  title, 
+  mostrar, 
+  mensagem= "Esta é uma  mensagem padrão", 
+  textoConfirmar= "Confirmar",
+  textoCancelar= "Cancelar",
+  aofechar, 
+  aoConfirmar}: DialogProps) { 
+ 
+
+    return ( 
+      <>
+
+
+      <Modal show={mostrar} onHide={aofechar} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{title? title: "texto padrão"}</Modal.Title>
+            </Modal.Header>
+          <Modal.Body>{mensagem}</Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondery' onClick=
+            {aofechar}>
+              {textoCancelar}
+            </Button>
+            <Button variant='primary' onClick=
+            {aoConfirmar}>
+              {textoConfirmar}
+            </Button>
+          </Modal.Footer>
+
+
+      </Modal>
+      </>
+      
+    )
+}
+
+export default Dialog;
