@@ -1,10 +1,10 @@
 
 import'./ListaProdutos.css'
-import banner from '../../assets/img/produtos/le_grand_chocolat.png'
 import Card from '../../Components/card/Card'
 import { useEffect, useState } from 'react'
 import type { Produto } from '../../types/Produto'
 import produtoservice from '../../services/ProdutoServices'
+import { useSearchParams } from 'react-router-dom'
 
 
 function ListaProdutos(){
@@ -12,7 +12,9 @@ function ListaProdutos(){
    const [produtos,setProdutos]= useState<Produto[]>([]);
    const [erro, setErro]= useState('');
    const[carregando, setCarregando]=useState (true);
-   
+   const[parametros]=useSearchParams();
+   const busca =(parametros.get(`q`)??'').toLocaleLowerCase('pt-BR');
+   const categoria=Number(parametros.get(`categoria`))
    useEffect(() => {
     // Promise.call
      produtoservice.listar()
@@ -22,7 +24,12 @@ function ListaProdutos(){
      
    
    }, [])
-  
+  const visiveis= produtos.filter(produto =>
+    produto.ativo &&
+    (!categoria || produto.categoriaIds.includes(categoria)) &&
+    (!busca || `${produto.nome} ${produto.descricaoCurta}`.toLocaleLowerCase('pt-BR').includes(busca))
+    
+  )
   
 
  return(
@@ -41,16 +48,15 @@ function ListaProdutos(){
     <p>Nenhum produto encontrado.</p>}
 
     <div className="prod_cards">
-     {produtos.map(produto=>{return < Card
-      id={Produto.id} 
-     key={produto.id}
-      imgProduto={`http://localhost:3000${produto.imagem}`} 
-      nome={produto.nome} 
-      descricao={produto.descricaoCurta}
-      valor={produto.precoPorkg} 
-      quantidadeAvaliacaoes={10} 
-      nota={9.5}
-      />})}
+     {visiveis.map(produto=><Card
+       id={produto.id}
+       key={produto.id}
+       imgProduto={`http://localhost:3000${produto.imagem}`}
+       nome={produto.nome}
+       descricao={produto.descricaoCurta}
+       valor={produto.precoPorkg}
+       quantidadeAvaliacaoes={10}
+       nota={9.5} />)}
         
     
     </div>

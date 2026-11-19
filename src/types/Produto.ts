@@ -1,10 +1,11 @@
 export type Produto={
+    precoPorKg: any;
     id: number;
     nome:string;
     descricaoCurta:string;
-    descriacaolonga:string;
+    descricaoLonga:string;
     precoPorkg:number;
     ativo:boolean;
     imagem:string;
-    categoriasIds:number[]
+    categoriaIds:number[]
 }
