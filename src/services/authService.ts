@@ -10,4 +10,4 @@ const authService ={
         return resposta.data.user;
     }
 }
-export default authService;
+export default authService;          
